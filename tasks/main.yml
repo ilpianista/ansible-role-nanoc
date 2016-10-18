@@ -45,11 +45,11 @@
 
 - name: Build latest code
   become: yes
-  command: gem build nanoc.gemspec chdir="{{ tmpdir.stdout }}/nanoc"
+  command: gem build nanoc.gemspec chdir="{{ tmpdir.stdout }}"
   when: not user_install and from_source
 
 - name: Install nanoc
-  command: gem install nanoc-*.gem chdir="{{ tmpdir.stdout }}/nanoc" --user-install
+  command: gem install nanoc-*.gem chdir="{{ tmpdir.stdout }}" --user-install
   when: user_install and from_source
 
 - name: Cleanup
