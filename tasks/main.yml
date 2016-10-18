@@ -1,0 +1,57 @@
+---
+- name: Check if gem is installed
+  become: yes
+  package: name=rubygems state=present
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Check if gem is installed
+  become: yes
+  package: name=ruby state=present
+  when: ansible_distribution != 'CentOS' and ansible_distribution != 'Red Hat Enterprise Linux'
+
+- name: Get ruby version
+  command: ruby -v
+  register: ruby_version
+  failed_when: False
+  changed_when: False
+
+- name: Check required Ruby version
+  fail: msg="Ruby required version is 2.1.0"
+  failed_when: ruby_version.stdout.startswith('ruby 1.') or ruby_version.stdout.startswith('ruby 2.0')
+
+- name: Install nanoc
+  gem: name=nanoc state=latest user_install=yes pre_release="{{ pre_release }}"
+  when: user_install and not from_source
+
+- name: Install nanoc
+  become: yes
+  gem: name=nanoc state=latest user_install=no pre_release="{{ pre_release }}"
+  when: not user_install and not from_source
+
+- name: Check git is installed
+  become: yes
+  package: name=git state=present
+  when: from_source
+
+- name: Create a temporary dir
+  command: mktemp -d
+  register: tmpdir
+  when: from_source
+  changed_when: False
+
+- name: Checkout latest code
+  git: repo=git://github.com/nanoc/nanoc.git depth=1 dest="{{ tmpdir.stdout }}"
+  when: from_source
+
+- name: Build latest code
+  become: yes
+  command: gem build nanoc.gemspec chdir="{{ tmpdir.stdout }}/nanoc"
+  when: not user_install and from_source
+
+- name: Install nanoc
+  command: gem install nanoc-*.gem chdir="{{ tmpdir.stdout }}/nanoc" --user-install
+  when: user_install and from_source
+
+- name: Cleanup
+  file: path="{{ tmpdir.stdout }}" state=absent
+  when: from_source

@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Andrea Scarpino
+  description: A role to install nanoc.
+  issue_tracker_url: https://github.com/ilpianista/ansible-role-nanoc/issues
+  license: license (BSD)
+  min_ansible_version: 1.6
+  github_branch: master
+
+  platforms:
+  - name: ArchLinux
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - xenial
+  - name: Debian
+    versions:
+    - jessie
+    - sid
+    - stretch
+
+  galaxy_tags: [web]
