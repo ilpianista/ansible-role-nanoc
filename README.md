@@ -1,5 +1,5 @@
-nanoc
-=====
+ilpianista.nanoc
+================
 
 [![Build Status](https://travis-ci.org/ilpianista/ansible-role-nanoc.svg?branch=master)](https://travis-ci.org/ilpianista/ansible-role-nanoc)
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nanoc-blue.svg)](https://galaxy.ansible.com/ilpianista/nanoc/)
@@ -29,11 +29,6 @@ Allow installation of pre-release versions of the gem.
     from_source: False
 
 Builds `nanoc` from sources.
-
-Dependencies
-------------
-
-None.
 
 Example Playbook
 ----------------
