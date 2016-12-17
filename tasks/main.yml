@@ -6,6 +6,11 @@
 
 - name: Check if gem is installed
   become: yes
+  package: name=ruby22-gems state=present
+  when: ansible_distribution == 'FreeBSD'
+
+- name: Check if gem is installed
+  become: yes
   package: name=ruby state=present
   when: ansible_distribution != 'CentOS' and ansible_distribution != 'Red Hat Enterprise Linux'
 
